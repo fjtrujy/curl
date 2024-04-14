@@ -2447,6 +2447,7 @@ static CURLMcode multi_runsingle(struct Curl_multi *multi,
           result = ret;
       }
 
+      infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
       if(result) {
         /*
          * The transfer phase returned error, we mark the connection to get
@@ -2456,6 +2457,7 @@ static CURLMcode multi_runsingle(struct Curl_multi *multi,
          * happened in the data connection.
          */
 
+        infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
         if(!(data->conn->handler->flags & PROTOPT_DUAL) &&
            result != CURLE_HTTP2_STREAM)
           streamclose(data->conn, "Transfer returned error");
@@ -2465,6 +2467,7 @@ static CURLMcode multi_runsingle(struct Curl_multi *multi,
       }
       else if(data->req.done) {
 
+        infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
         /* call this even if the readwrite function returned error */
         Curl_posttransfer(data);
 
@@ -2500,14 +2503,18 @@ static CURLMcode multi_runsingle(struct Curl_multi *multi,
             free(newurl);
             newurl = data->req.location;
             data->req.location = NULL;
+            infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
             result = Curl_follow(data, newurl, FOLLOW_FAKE);
+            infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
             free(newurl);
             if(result) {
               stream_error = TRUE;
+              infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
               result = multi_done(data, result, TRUE);
             }
           }
 
+          infof(data, "===> %s:%d", __FUNCTION__, __LINE__);
           if(!result) {
             multistate(data, MSTATE_DONE);
             rc = CURLM_CALL_MULTI_PERFORM;
